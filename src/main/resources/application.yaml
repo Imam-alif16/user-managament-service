@@ -3,7 +3,7 @@ spring:
     name: user-service
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/b14_technocenter
+    url: jdbc:postgresql://localhost:5432/postgres
     #connection_url/db_name
     username: postgres
     password: palianganteng0401
@@ -21,3 +21,8 @@ server:
 
 jwt:
   secret-key: T&5^P6TZ4FHnqJIGQ,cKhW]4>-Yax^hagdq3417235gasdfasgd6S5a4s65X
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/

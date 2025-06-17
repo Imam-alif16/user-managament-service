@@ -69,5 +69,5 @@ class MasterUserEntity (
     var isActive: Boolean = true,
 
     @Column(name = "is_delete")
-    var isDelete: Boolean = false
+    var isDeleted: Boolean = false
 )
