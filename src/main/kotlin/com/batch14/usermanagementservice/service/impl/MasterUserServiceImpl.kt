@@ -1,6 +1,7 @@
 package com.batch14.usermanagementservice.service.impl
 
 
+import com.batch14.usermanagementservice.domain.constant.Constant
 import com.batch14.usermanagementservice.domain.dto.request.ReqLoginDto
 import com.batch14.usermanagementservice.domain.dto.request.ReqRegisterDto
 import com.batch14.usermanagementservice.domain.dto.request.ReqUpdateUserDto
@@ -138,10 +139,10 @@ class MasterUserServiceImpl(
 
     //kalau data belum ada di redis bakal disimpan
     // kalau data di redis udah ada bakal langsung return data dari redis
-    @Cacheable(
-        "getUserById",
-        key = "{#id}"
-    )
+//    @Cacheable(
+//        "getUserById",
+//        key = "{#id}"
+//    )
     override fun findUserById(id: Int): ResGetUsersDto {
         val user = masterUserRepository.findById(id).orElseThrow {
             throw CustomException("User with id ${id} not found!!!", 400)
@@ -167,10 +168,10 @@ class MasterUserServiceImpl(
         }
     }
 
-    @CacheEvict(
-        value = ["getUserById"],
-        key = "{#userId}"
-    )
+//    @CacheEvict(
+//        value = ["getUserById"],
+//        key = "{#userId}"
+//    )
     override fun updateUser(
         req: ReqUpdateUserDto,
         userId: Int
@@ -236,6 +237,15 @@ class MasterUserServiceImpl(
 
 
     override fun hardDeleteUser(id: Int): ResGetUsersDto {
+        val userId = httpServletRequest.getHeader(Constant.HEADER_USER_ID)
+        var roleId = httpServletRequest.getHeader(Constant.HEADER_USER_ROLE)
+
+        if (roleId != "admin") {
+            throw CustomException(
+                "Tidak bisa hapus kecuali admin",
+                HttpStatus.BAD_REQUEST.value())
+        }
+
         val user = masterUserRepository.findById(id).orElseThrow {
             throw CustomException(
                 "User dengan ide ${id} tidak ditemukan atau sudah terhapus",
